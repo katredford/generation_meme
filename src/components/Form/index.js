@@ -1,10 +1,14 @@
 import React from "react";
 
 export default function Form() {
-  const [memeImg, setMemeImg] = React.useState("")
+  const [meme, setMeme] = React.useState({
+    topText: "",
+    bottomeText: "",
+    randomImage: "http://i.imgflip.com/1bij.jpg"
+  })
 
 
-  function fetchMeme(){
+  function fetchMeme() {
     fetch('https://api.imgflip.com/get_memes')
       .then(function (response) {
         return response.json();
@@ -15,7 +19,12 @@ export default function Form() {
         const randomInt = Math.floor(Math.random() * meme.length)
         const url = meme[randomInt].url
         console.log(url, "this is the random stuff")
-        setMemeImg(url)
+        setMeme(prevMeme => {
+          return {
+            ...prevMeme,
+            randomImg: url
+          }
+        })
       })
   }
   return (
@@ -34,7 +43,7 @@ export default function Form() {
                  />
           <button onClick={fetchMeme} className="submit-btn">Create Meme</button>
         </div>
-        <img src={memeImg} className="meme-Img" />
+        <img src={meme.randomImg} className="meme-Img" alt=""/>
         </main>
   </div>
   )
